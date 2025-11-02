@@ -1,78 +1,84 @@
 Data Science Intermediate Project
-# Stock Price Prediction
+# Stock Price Prediction using LSTM and MLP
 
-## Project Overview
-This project builds a Fake News Detection System trained on a dataset containing real and fake news articles. It uses TF-IDF vectorization and a Logistic Regression or Naive Bayes classifier to analyze the textual patterns of news content. The system is deployed with Streamlit for easy interaction — users can enter a news statement and instantly see if it’s fake or real, along with a confidence score.
+This project predicts future stock prices using Deep Learning (LSTM) and Machine Learning (MLPRegressor) models. It uses historical stock market data (for example, AAPL.csv) along with metadata from the Kaggle Stock Market Dataset.
 
-## Key Features
-- Text preprocessing with cleaning, stopword removal, and lemmatization
-- TF-IDF vectorization for feature extraction
-- Model trained to achieve around 98–99% accuracy
-- Streamlit web interface for real-time predictions
-- Confidence score displayed for each prediction
-- Automatically loads a trained model (or trains one if not found)
+## Overview
+The project includes:
+- Data preprocessing using MinMax scaling
+- Model training with both LSTM (deep learning) and MLP (machine learning)
+- Interactive Streamlit web app for prediction and visualization
+- Future forecasting (next-day and 30-day ahead)
 
-## Why Some True Statements Are Flagged as Fake
-Short or overly simple sentences such as "Donald Trump is a president of America" may be predicted as fake because the model was trained mostly on full-length news articles. It assumes "fake" when:
-- The text resembles clickbait or incomplete statements seen in fake samples
-- The statement lacks journalistic context such as sources or structure
-- The model detects political figure mentions that often correlated with fake news in the dataset
+Although the model here was trained on Apple Inc. (AAPL) data, you can easily replace the dataset with any other stock’s CSV file from the same source.
 
-To improve predictions, provide more context. For example:
-"Donald Trump served as the 45th President of the United States, according to official records."
-This provides linguistic structure and facts, which help the model classify more accurately.
+## Dataset
+Dataset source: https://www.kaggle.com/datasets/jacksoncrow/stock-market-dataset?select=stocks
 
-## Tech Stack
-- Python 3
-- Pandas, NumPy
-- NLTK (for stopwords and lemmatization)
-- Scikit-learn (for TF-IDF and model training)
-- Streamlit (for deployment)
-- Joblib (for saving/loading models)
+You will use two files from the dataset:
+1. symbols_valid_meta.csv — contains metadata for all listed companies
+2. <SYMBOL>.csv — the specific stock data (for example, AAPL.csv, MSFT.csv, etc.)
 
-## Dataset 
-link : https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset
+Example structure:
+AAPL.csv
+symbols_valid_meta.csv
+models/
+   ├─ lstm_aapl_model.h5
+   ├─ mlp_aapl_model.joblib
+   └─ close_scaler.save
+app.py
+stock_price_prediction.ipynb
 
-## Folder Structure
-Fake-News-Detection/
-│
-├── fake_news_detection.ipynb   # Model training and evaluation
-├── app.py                      # Streamlit application
-├── vectorizer.pkl              # Saved TF-IDF vectorizer
-├── model.pkl                   # Saved ML model
-├── true.csv                    # True news dataset
-├── fake.csv                    # Fake news dataset
-└── README.md                   # Project documentation
+## How It Works
+1. Model Training  
+Run the Jupyter notebook stock_price_prediction.ipynb to:
+   - Load AAPL.csv and symbols_valid_meta.csv
+   - Train the LSTM and MLP models
+   - Save trained models and scalers in the models/ folder
 
-## How to Run
-1. Install dependencies
-   pip install -r requirements.txt
-
-2. Run the Streamlit app
+2. Streamlit Web App  
+Run the following command in the terminal:
    streamlit run app.py
+Then, open your browser to view the web interface.
 
-3. Interact with the app  
-   Enter any news content and click "Check News" to get:
-   - Real or Fake label
-   - Confidence percentage
+The app allows you to:
+- Select any stock symbol (default: AAPL)
+- View its company information
+- See historical closing prices
+- Predict the next-day closing price
+- Generate a 30-day forecast chart
 
-## Model Performance
-Accuracy: 98.8%  
-Precision: 0.99  
-Recall: 0.99  
-F1-score: 0.99  
+## Model Details
+Model | Framework | Purpose
+------|------------|---------
+LSTM | TensorFlow / Keras | Sequential deep learning model for time series
+MLPRegressor | Scikit-learn | Lightweight fallback model when TensorFlow isn't available
 
-## Example Predictions
-Input: "The U.S. Senate passed a new infrastructure bill on Tuesday."  
-Output: Real News (Confidence: 97%)
+Both models are trained using 60-day lookback windows of normalized closing prices.
 
-Input: "NASA confirms Earth will go dark for 15 days next month."  
-Output: Fake News (Confidence: 99%)
+## Example Output
+Next-Day Predicted Close: 203.47  
+30-Day Forecast Chart: Displays predicted price trend overlayed on historical prices.
 
-## Future Improvements
-- Add multiple ML models for comparison
-- Include article source verification
-- Integrate live fact-checking API
+## Using Other Stocks
+To use another stock (for example, MSFT or AMZN):
+1. Download the desired <SYMBOL>.csv file from the Kaggle dataset.
+2. Place it in the same directory as the app.
+3. Run the app again — it will automatically detect and use that CSV.
+
+## Requirements
+Install dependencies:
+   pip install pandas numpy scikit-learn tensorflow streamlit matplotlib joblib
+If TensorFlow fails on your system, the app will automatically switch to the MLPRegressor model.
+
+## Project Files
+File | Description
+------|--------------
+stock_price_prediction.ipynb | Model training and evaluation
+app.py | Streamlit dashboard for interactive predictions
+symbols_valid_meta.csv | Company metadata
+<SYMBOL>.csv | Historical stock data
+models/ | Saved models and scaler
 
 ## Contributing
 Contributions are welcome!
@@ -84,5 +90,3 @@ This project is licensed under the [![License: MIT](https://img.shields.io/badge
 ## Author
 **Aarya Mehta**  
 🔗 [GitHub Profile](https://github.com/AaryaMehta2506)
-
-
