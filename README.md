@@ -1,5 +1,5 @@
 Data Science Intermediate Project
-# Fake News Detection
+# Stock Price Prediction
 
 ## Project Overview
 This project builds a Fake News Detection System trained on a dataset containing real and fake news articles. It uses TF-IDF vectorization and a Logistic Regression or Naive Bayes classifier to analyze the textual patterns of news content. The system is deployed with Streamlit for easy interaction — users can enter a news statement and instantly see if it’s fake or real, along with a confidence score.
